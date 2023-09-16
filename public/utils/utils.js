@@ -1,3 +1,4 @@
+/*
 export async function handleHttpErrors(res) {
   if (!res.ok) {
     const errorResponse = await res.json();
@@ -42,3 +43,4 @@ export async function fetchPostJsonFormData(URL, form, token = null) {
   const addedData = await fetch(URL, options).then(handleHttpErrors);
   return addedData;
 };
+*/

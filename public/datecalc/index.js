@@ -1,3 +1,4 @@
+/*
 import { API_URL } from "../utils/settings.js";
 import { fetchPostJsonFormData } from "../utils/utils.js";
 
@@ -24,3 +25,4 @@ async function initDateCalc() {
     initialized = true;
   };
 };
+*/

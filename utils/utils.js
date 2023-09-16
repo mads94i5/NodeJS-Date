@@ -1,3 +1,5 @@
+
+0/*
 function calcDate(yourAge, dateAge) {
     lowestRecommendedAge = yourAge / 2 + 7;
     if (dateAge < 15) {
@@ -30,3 +32,4 @@ function calcDate(yourAge, dateAge) {
   };
   
   module.exports = { calcDate, getAgeFromDate };
+  */
