@@ -25,7 +25,7 @@ export async function fetchGetJson(URL, token = null) {
 };
 
 export async function fetchPostJsonFormData(URL, form, token = null) {
-  let formElement = /** @type {HTMLFormElement} */ (form);
+  let formElement = /** @type {HTMLFormElement}  (form);
   const formData = new FormData(formElement);
   const dataFromForm = {};
   formData.forEach((value, key) => (dataFromForm[key] = value));
