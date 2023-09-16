@@ -28,9 +28,12 @@ app.post("/api/datecalc", (req, res) => {
 
 function calcDate(yourAge, dateAge) {
   lowestRecommendedAge = yourAge / 2 + 7;
-  if (dateAge < 15) {
+  lowestDatingAge = 15;
+  if (dateAge < lowestDatingAge && yourAge < lowestDatingAge) {
+    return "You're both too young to be dating!";
+  } else if (dateAge < lowestDatingAge) {
     return "Your date is too young to be dating, you disgusting pig!";
-  } else if (yourAge < 15) {
+  } else if (yourAge < lowestDatingAge) {
     return "You are too young to be dating.";
   } else if (yourAge < dateAge) {
     return "Your date is older than you.";
