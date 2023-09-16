@@ -27,33 +27,8 @@ app.post("/api/datecalc", (req, res) => {
   res.send({ data: isDateAcceptable });
 });
 
-let dateCalcInitialized = false;
-
-async function initDateCalc() {
-  const form = document.querySelector("#form");
-  const resultContainer = document.getElementById("date-result");
-  if (!dateCalcInitialized) {
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      try {
-        const response = await fetchPostJsonFormData(
-          API_URL + "datecalc",
-          form
-        );
-        if (response) {
-          resultContainer.innerText = response.data;
-        } else {
-          resultContainer.innerText = response.message;
-        }
-      } catch (error) {
-        resultContainer.innerText = error.message;
-      }
-    });
-    dateCalcInitialized = true;
-  }
-}
-
 function calcDate(yourAge, dateAge) {
+  console.log("calcDate");
   lowestRecommendedAge = yourAge / 2 + 7;
   if (dateAge < 15) {
     return "Your date is too young to be dating, you disgusting pig!";
@@ -71,6 +46,7 @@ function calcDate(yourAge, dateAge) {
 }
 
 function getAgeFromDate(date) {
+  console.log("getAgeFromDate");
   const currentDate = new Date();
   const inputDate = new Date(date);
 
@@ -93,20 +69,6 @@ async function handleHttpErrors(res) {
     throw error;
   }
   return res.json();
-}
-
-async function fetchGetJson(URL, token = null) {
-  let options = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-  if (token) {
-    options.headers.Authorization = `Bearer ${token}`;
-  }
-  const data = await fetch(URL, options).then(handleHttpErrors);
-  return data;
 }
 
 async function fetchPostJsonFormData(URL, form, token = null) {

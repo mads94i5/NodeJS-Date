@@ -1,31 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <title>DateCalc | Date Calculator</title>
-</head>
-<body>
-    <div class="text-center">
-        <h1>Date Calculator</h1>
-        <br>
-        <form id="form">
-            <div class="form-group">
-                <label>Enter your birth date:
-                <input type="date" name="yourBirthDate"></label>
-            </div>
-            <br>
-            <div class="form-group">
-                <label>Enter your date's birth date:
-                <input type="date" name="dateBirthDate"></label>
-            </div>
-            <br>
-            <button class="btn btn-success" type="submit">Submit</button>
-        </form>
-        <br>
-        <div id="date-result"></div>
-    </div>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+            crossorigin="anonymous"
+        />
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // const API_URL = "https://node-js-date.vercel.app/api/";
+                const API_URL = "http://localhost:8080/api/";
+                let initialized = false;
+                initDateCalc();
+
+                async function initDateCalc() {
+                    const form = document.querySelector("#form");
+                    const resultContainer =
+                        document.getElementById("date-result");
+                    if (!initialized) {
+                        form.addEventListener("submit", async (event) => {
+                            event.preventDefault();
+                            try {
+                                const response = await fetchPostJsonFormData(
+                                    API_URL + "datecalc",
+                                    form
+                                );
+                                if (response) {
+                                    resultContainer.innerText = response.data;
+                                } else {
+                                    resultContainer.innerText =
+                                        response.message;
+                                }
+                            } catch (error) {
+                                resultContainer.innerText = error.message;
+                            }
+                        });
+                        initialized = true;
+                    }
+                }
+                async function fetchPostJsonFormData(URL, form, token = null) {
+                    let formElement = /** @type {HTMLFormElement} */ (form);
+                    const formData = new FormData(formElement);
+                    const dataFromForm = {};
+                    formData.forEach(
+                        (value, key) => (dataFromForm[key] = value)
+                    );
+
+                    let options = {
+                        method: "POST",
+                        body: JSON.stringify(dataFromForm),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    };
+                    if (token) {
+                        options.headers.Authorization = `Bearer ${token}`;
+                    }
+                    const addedData = await fetch(URL, options).then(
+                        handleHttpErrors
+                    );
+                    return addedData;
+                }
+                async function handleHttpErrors(res) {
+                    if (!res.ok) {
+                        const errorResponse = await res.json();
+                        const error = new Error(errorResponse.message);
+                        // @ts-ignore
+                        error.fullResponse = errorResponse;
+                        throw error;
+                    }
+                    return res.json();
+                }
+            });
+        </script>
+        <title>DateCalc | Date Calculator</title>
+    </head>
+    <body>
+        <div class="text-center">
+            <h1>Date Calculator</h1>
+            <br />
+            <form id="form">
+                <div class="form-group">
+                    <label
+                        >Enter your birth date:
+                        <input type="date" name="yourBirthDate"
+                    /></label>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label
+                        >Enter your date's birth date:
+                        <input type="date" name="dateBirthDate"
+                    /></label>
+                </div>
+                <br />
+                <button class="btn btn-success" type="submit">Submit</button>
+            </form>
+            <br />
+            <div id="date-result"></div>
+        </div>
+    </body>
 </html>
