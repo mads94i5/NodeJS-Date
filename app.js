@@ -84,7 +84,7 @@ function getAgeFromDate(date) {
   }
 }
 
-export async function handleHttpErrors(res) {
+async function handleHttpErrors(res) {
   if (!res.ok) {
     const errorResponse = await res.json();
     const error = new Error(errorResponse.message);
@@ -95,7 +95,7 @@ export async function handleHttpErrors(res) {
   return res.json();
 }
 
-export async function fetchGetJson(URL, token = null) {
+async function fetchGetJson(URL, token = null) {
   let options = {
     method: "GET",
     headers: {
@@ -109,7 +109,7 @@ export async function fetchGetJson(URL, token = null) {
   return data;
 }
 
-export async function fetchPostJsonFormData(URL, form, token = null) {
+async function fetchPostJsonFormData(URL, form, token = null) {
   let formElement = /** @type {HTMLFormElement} */ (form);
   const formData = new FormData(formElement);
   const dataFromForm = {};
